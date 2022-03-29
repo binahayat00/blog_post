@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('user_name');
             $table->string('title')->nullable();
-            $table->string('text');
+            $table->longText('text');
             $table->timestamps();
         });
     }
