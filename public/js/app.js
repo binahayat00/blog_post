@@ -5791,12 +5791,19 @@ __webpack_require__.r(__webpack_exports__);
     return {
       allCommentsPost: null,
       name: "blog-component",
-      searchQuery: true
+      post: null,
+      commentText: 'test',
+      user_name: 'amir_reza',
+      comment_idcomment_id: null,
+      child1_comment_idchild1_comment_id: null,
+      child2_comment_idchild2_comment_id: null,
+      child3_comment_idchild3_comment_id: null
     };
   },
   mounted: function mounted() {
     console.log("Component mounted.");
     this.getAllCommentsPost();
+    this.getPostById();
   },
   methods: {
     getAllCommentsPost: function getAllCommentsPost() {
@@ -5812,6 +5819,41 @@ __webpack_require__.r(__webpack_exports__);
         if (response.data.success) {
           _this.allCommentsPost = response.data.data;
           console.log(_this.allCommentsPost);
+        }
+      });
+    },
+    getPostById: function getPostById() {
+      var _this2 = this;
+
+      axios.get('api/post', {
+        params: {
+          "id": 1
+        }
+      }).then(function (response) {
+        console.log(response.data);
+
+        if (response.data.success) {
+          _this2.post = response.data.data;
+          console.log('yyyyyy', _this2.post.id);
+
+          _this2.storeComment();
+        }
+      });
+    },
+    storeComment: function storeComment() {
+      axios.post('api/comment/store', {
+        "user_name": this.user_name,
+        "text": this.commentText,
+        "post_id": this.post.id,
+        "comment_id": this.comment_id,
+        "child1_comment_id": this.child1_comment_id,
+        "child2_comment_id": this.child2_comment_id,
+        "child3_comment_id": this.child3_comment_id
+      }).then(function (response) {
+        console.log(response.data);
+
+        if (response.data.success) {
+          console.log(response.data.data);
         }
       });
     }
