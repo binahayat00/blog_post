@@ -16,7 +16,8 @@ class PostService
         $this->postRepository = $postRepository;
     }
 
-    public function findById($id){
-        return $this->postRepository->findById($id);
+    public function findById($data){
+        $validated = $data->validated();
+        return $this->postRepository->findById($validated['id']);
     }
 }

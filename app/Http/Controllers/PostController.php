@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Post\FindByIdRequest;
 use App\Services\PostService;
 use App\Services\ResponsesService;
 use Exception;
@@ -15,9 +16,9 @@ class PostController extends Controller
         $this->postService = $postService;
     }
 
-    public function findById(Request $request){
+    public function findById(FindByIdRequest $request){
         try{
-            $result = ResponsesService::success($this->postService->findById($request->id));
+            $result = ResponsesService::success($this->postService->findById($request));
         }
         catch(Exception $e){
             $result = ResponsesService::exception($e);
