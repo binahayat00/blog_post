@@ -12,7 +12,6 @@
 <body>
     <div id="app">
         <div class="">
-        <navbar></navbar>
         <blog-component></blog-component>
 
         @yield('content')

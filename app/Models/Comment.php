@@ -26,4 +26,8 @@ class Comment extends Model
     public function child2_commentPost(){
         return $this->hasMany(CommentsPost::class,'child2_comment_id','id');
     }
+
+    public function child3_commentPost(){
+        return $this->hasMany(CommentsPost::class,'child3_comment_id','id');
+    }
 }

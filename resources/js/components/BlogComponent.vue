@@ -5,6 +5,33 @@
     rel="stylesheet"
   />
   <div class="container bootdey">
+    <!-- <div id="example-1">
+      <div v-for="(Comment, index) in allCommentsPost" :key="Comment.id">
+        <p>{{ index + 1 }}</p>
+        <p>{{ Comment.id }}</p>
+        <p>{{ Comment.post_id }}</p>
+        <p>{{ Comment.comment_id }}</p>
+        <p>{{ Comment.child1_comment_id }}</p>
+        <p>{{ Comment.child2_comment_id }}</p>
+        <p>{{ Comment.child3_comment_id }}</p>
+        <p>{{ Comment.comment.user_name }}</p>
+        <p>{{ Comment.comment.title }}</p>
+        <p>{{ Comment.comment.text }}</p>
+        <p>{{ Comment.comment.updated_at }}</p>
+        <p>{{ Comment.child1_comment.user_name }}</p>
+        <p>{{ Comment.child1_comment.title }}</p>
+        <p>{{ Comment.child1_comment.text }}</p>
+        <p>{{ Comment.child1_comment.updated_at }}</p>
+        <p>{{ Comment.child2_comment.user_name }}</p>
+        <p>{{ Comment.child2_comment.title }}</p>
+        <p>{{ Comment.child2_comment.text }}</p>
+        <p>{{ Comment.child2_comment.updated_at }}</p>
+        <p>{{ Comment.child3_comment.user_name }}</p>
+        <p>{{ Comment.child3_comment.title }}</p>
+        <p>{{ Comment.child3_comment.text }}</p>
+        <p>{{ Comment.child3_comment.updated_at }}</p>
+      </div>
+    </div> -->
     <div class="col-md-12 bootstrap snippets">
       <div class="panel">
         <div class="panel-body">
@@ -14,7 +41,7 @@
             placeholder="What are you thinking?"
           ></textarea>
           <div class="mar-top clearfix">
-            <button class="btn btn-sm btn-primary pull-right" type="submit">
+            <button class="btn btn-sm btn-primary pull-right" type="submit" @click="getAllCommentsPost">
               <i class="fa fa-pencil fa-fw"></i> Share
             </button>
             <a
@@ -32,8 +59,116 @@
           </div>
         </div>
       </div>
+
       <div class="panel">
         <div class="panel-body">
+          <!-- start -->
+          <div v-for="(Comment, index) in allCommentsPost" :key="Comment.id" class="media-block">
+            <a class="media-left" href="#"
+              ><img
+                class="img-circle img-sm"
+                alt="Profile Picture"
+                src="https://bootdey.com/img/Content/avatar/avatar1.png"
+            /></a>
+            <div class="media-body">
+              <div class="mar-btm">
+                <a
+                  href="#"
+                  class="btn-link text-semibold media-heading box-inline"
+                  >{{ Comment.comment.user_name }}</a
+                >
+                <p class="text-muted text-sm">
+                  <i class="fa fa-mobile fa-lg"></i> {{ Comment.comment.title }}
+                </p>
+              </div>
+              <p>
+                {{ Comment.comment.text }}
+              </p>
+              <div class="pad-ver">
+                <div class="btn-group">
+                  <a class="btn btn-sm btn-default btn-hover-success" href="#"
+                    ><i class="fa fa-thumbs-up"></i
+                  ></a>
+                  <a class="btn btn-sm btn-default btn-hover-danger" href="#"
+                    ><i class="fa fa-thumbs-down"></i
+                  ></a>
+                </div>
+                <a class="btn btn-sm btn-default btn-hover-primary" href="#"
+                  >Comment</a
+                >
+              </div>
+              <hr />
+
+              <!-- Comments -->
+              <div>
+                <div class="media-block">
+                  <a class="media-left" href="#"
+                    ><img
+                      class="img-circle img-sm"
+                      alt="Profile Picture"
+                      src="https://bootdey.com/img/Content/avatar/avatar2.png"
+                  /></a>
+                  <div class="media-body">
+                    <div class="mar-btm">
+                      <a
+                        href="#"
+                        class="btn-link text-semibold media-heading box-inline"
+                        >{{ Comment.child1_comment.user_name }}</a
+                      >
+                      <p class="text-muted text-sm">
+                        <i class="fa fa-mobile fa-lg"></i>{{ Comment.child1_comment.title }}
+                      </p>
+                    </div>
+                    <p>
+                      {{ Comment.child1_comment.text }}
+                    </p>
+                    <div class="pad-ver">
+                      <a
+                        class="btn btn-sm btn-default btn-hover-primary"
+                        href="#"
+                        >Comment</a
+                      >
+                    </div>
+                    <hr />
+                  </div>
+                </div>
+
+                <div class="media-block">
+                  <a class="media-left" href="#"
+                    ><img
+                      class="img-circle img-sm"
+                      alt="Profile Picture"
+                      src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                    />
+                  </a>
+                  <div class="media-body">
+                    <div class="mar-btm">
+                      <a
+                        href="#"
+                        class="btn-link text-semibold media-heading box-inline"
+                        >{{ Comment.child2_comment.user_name }}</a
+                      >
+                      <p class="text-muted text-sm">
+                        <i class="fa fa-globe fa-lg"></i> {{ Comment.child1_comment.title }}
+                      </p>
+                    </div>
+                    <p>
+                      {{ Comment.child1_comment.text }}
+                    </p>
+                    <div class="pad-ver">
+                      <a
+                        class="btn btn-sm btn-default btn-hover-primary"
+                        href="#"
+                        >Comment</a
+                      >
+                    </div>
+                    <hr />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- finish -->
           <!-- Newsfeed Content -->
           <!--===================================================-->
           <div class="media-block">
@@ -285,9 +420,29 @@
 
 export default {
     name: "blog-component",
+    data() {
+        return {
+            allCommentsPost : null,
+            name: "blog-component",
+            searchQuery: true,
+        }
+    },
     mounted() {
         console.log("Component mounted.");
+        this.getAllCommentsPost()
     },
+    methods: {
+      getAllCommentsPost() {
+          axios.get('api/comments/all',{params : { "postId": 1 }}).then(
+              (response) => {
+                  console.log(response.data);
+                  if (response.data.success) {
+                      this.allCommentsPost = response.data.data;
+                      console.log(this.allCommentsPost)
+                  }
+              })
+      },
+    }
 };
 </script>
 
@@ -318,6 +473,8 @@ body{
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
+
 
 .panel-body {
     padding: 25px 20px;

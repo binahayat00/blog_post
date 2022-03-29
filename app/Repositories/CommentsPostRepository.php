@@ -12,7 +12,7 @@ use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 class CommentsPostRepository
 {
     public function findByPostId($postId){
-        return CommentsPost::with('comment','child1_comment','child2_comment')->orderByDesc('updated_at')->get();
+        return CommentsPost::with('comment','child1_comment','child2_comment','child3_comment','post')->orderByDesc('updated_at')->get();
         //return CommentsPost::where(['post_id' => $postId])->get();
     }
 

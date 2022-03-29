@@ -9,6 +9,10 @@ class CommentsPost extends Model
 {
     use HasFactory;
 
+    public function post(){
+        return $this->belongsTo(Post::class,'post_id','id');
+    }
+    
     public function comment(){
         return $this->belongsTo(Comment::class,'comment_id','id');
     }
@@ -19,5 +23,9 @@ class CommentsPost extends Model
 
     public function child2_comment(){
         return $this->belongsTo(Comment::class,'child2_comment_id','id');
+    }
+
+    public function child3_comment(){
+        return $this->belongsTo(Comment::class,'child3_comment_id','id');
     }
 }
