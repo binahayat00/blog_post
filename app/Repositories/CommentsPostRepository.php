@@ -13,11 +13,10 @@ class CommentsPostRepository
 {
     public function findByPostId($postId){
         return CommentsPost::with('comment','child1_comment','child2_comment','child3_comment','post')->orderByDesc('updated_at')->get();
-        //return CommentsPost::where(['post_id' => $postId])->get();
     }
 
     public function store($data){
-        return CommentsPost::insert($data);
+        return CommentsPost::create($data);
     }
 
     public function childUpdate($data, array $child){

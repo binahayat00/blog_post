@@ -5,57 +5,37 @@
     rel="stylesheet"
   />
   <div class="container bootdey">
-    <!-- <div id="example-1">
-      <div v-for="(Comment, index) in allCommentsPost" :key="Comment.id">
-        <p>{{ index + 1 }}</p>
-        <p>{{ Comment.id }}</p>
-        <p>{{ Comment.post_id }}</p>
-        <p>{{ Comment.comment_id }}</p>
-        <p>{{ Comment.child1_comment_id }}</p>
-        <p>{{ Comment.child2_comment_id }}</p>
-        <p>{{ Comment.child3_comment_id }}</p>
-        <p>{{ Comment.comment.user_name }}</p>
-        <p>{{ Comment.comment.title }}</p>
-        <p>{{ Comment.comment.text }}</p>
-        <p>{{ Comment.comment.updated_at }}</p>
-        <p>{{ Comment.child1_comment.user_name }}</p>
-        <p>{{ Comment.child1_comment.title }}</p>
-        <p>{{ Comment.child1_comment.text }}</p>
-        <p>{{ Comment.child1_comment.updated_at }}</p>
-        <p>{{ Comment.child2_comment.user_name }}</p>
-        <p>{{ Comment.child2_comment.title }}</p>
-        <p>{{ Comment.child2_comment.text }}</p>
-        <p>{{ Comment.child2_comment.updated_at }}</p>
-        <p>{{ Comment.child3_comment.user_name }}</p>
-        <p>{{ Comment.child3_comment.title }}</p>
-        <p>{{ Comment.child3_comment.text }}</p>
-        <p>{{ Comment.child3_comment.updated_at }}</p>
-      </div>
-    </div> -->
+    <div v-if="post" class="post-btm">
+      <h3 class="text-muted">
+        <i class="fa"></i>👋 {{ post.title }}
+      </h3>
+      <hr>
+      <a
+        href="#"
+        class="btn-link text-semibold media-heading box-inline"
+        >{{ post.user_name }}</a
+      >
+      <p>
+        {{ post.text }}
+      </p>
+    </div>
     <div class="col-md-12 bootstrap snippets">
-      <div class="panel">
+      <div class="panel" id="submit-form">
         <div class="panel-body">
+          <p v-if="user_repled" class="text-muted">reply to : "{{ this.user_repled }}" comment</p>
+          <input type="text" class="form-control"
+            rows="2"
+            placeholder="Enter Your Name!" v-model="user_name">
           <textarea
             class="form-control"
             rows="2"
-            placeholder="What are you thinking?"
+            placeholder="Leave a comment!" v-model="commentText"
           ></textarea>
           <div class="mar-top clearfix">
-            <button class="btn btn-sm btn-primary pull-right" type="submit" @click="getAllCommentsPost">
+            <button class="btn btn-sm btn-primary pull-right" type="submit" @click="storeComment">
               <i class="fa fa-pencil fa-fw"></i> Share
             </button>
-            <a
-              class="btn btn-trans btn-icon fa fa-video-camera add-tooltip"
-              href="#"
-            ></a>
-            <a
-              class="btn btn-trans btn-icon fa fa-camera add-tooltip"
-              href="#"
-            ></a>
-            <a
-              class="btn btn-trans btn-icon fa fa-file add-tooltip"
-              href="#"
-            ></a>
+            
           </div>
         </div>
       </div>
@@ -64,13 +44,14 @@
         <div class="panel-body">
           <!-- start -->
           <div v-for="(Comment, index) in allCommentsPost" :key="Comment.id" class="media-block">
-            <a class="media-left" href="#"
-              ><img
-                class="img-circle img-sm"
-                alt="Profile Picture"
-                src="https://bootdey.com/img/Content/avatar/avatar1.png"
-            /></a>
-            <div class="media-body">
+            <div class="media-body-comment" >
+              <div v-if="Comment.comment">
+                <a class="media-left" href="#"
+                  ><img
+                    class="img-circle img-sm"
+                    alt="Profile Picture"
+                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                /></a>
               <div class="mar-btm">
                 <a
                   href="#"
@@ -93,22 +74,23 @@
                     ><i class="fa fa-thumbs-down"></i
                   ></a>
                 </div>
-                <a class="btn btn-sm btn-default btn-hover-primary" href="#"
+                <a class="btn btn-sm btn-default btn-hover-primary" href="#submit-form" @click="set_comment_id(Comment.comment.id,Comment.comment.user_name)"
                   >Comment</a
                 >
+              </div>
               </div>
               <hr />
 
               <!-- Comments -->
               <div>
-                <div class="media-block">
-                  <a class="media-left" href="#"
-                    ><img
-                      class="img-circle img-sm"
-                      alt="Profile Picture"
-                      src="https://bootdey.com/img/Content/avatar/avatar2.png"
-                  /></a>
-                  <div class="media-body">
+                <div class="media-block" v-if="Comment.child1_comment">
+                  <div class="media-body-child1">
+                      <a class="media-left" href="#"
+                        ><img
+                          class="img-circle img-sm"
+                          alt="Profile Picture"
+                          src="https://bootdey.com/img/Content/avatar/avatar2.png"
+                      /></a>
                     <div class="mar-btm">
                       <a
                         href="#"
@@ -125,23 +107,23 @@
                     <div class="pad-ver">
                       <a
                         class="btn btn-sm btn-default btn-hover-primary"
-                        href="#"
+                        href="#submit-form" @click="set_child1comment_id(Comment.child1_comment.id,Comment.comment.user_name)"
                         >Comment</a
                       >
                     </div>
+                    </div>
                     <hr />
-                  </div>
                 </div>
 
-                <div class="media-block">
-                  <a class="media-left" href="#"
-                    ><img
-                      class="img-circle img-sm"
-                      alt="Profile Picture"
-                      src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                    />
-                  </a>
-                  <div class="media-body">
+                <div class="media-block" v-if="Comment.child2_comment">
+                  <div class="media-body-child2">
+                      <a class="media-left" href="#"
+                        ><img
+                          class="img-circle img-sm"
+                          alt="Profile Picture"
+                          src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                        />
+                      </a>
                     <div class="mar-btm">
                       <a
                         href="#"
@@ -149,17 +131,49 @@
                         >{{ Comment.child2_comment.user_name }}</a
                       >
                       <p class="text-muted text-sm">
-                        <i class="fa fa-globe fa-lg"></i> {{ Comment.child1_comment.title }}
+                        <i class="fa fa-globe fa-lg"></i> {{ Comment.child2_comment.title }}
                       </p>
                     </div>
                     <p>
-                      {{ Comment.child1_comment.text }}
+                      {{ Comment.child2_comment.text }}
                     </p>
                     <div class="pad-ver">
                       <a
                         class="btn btn-sm btn-default btn-hover-primary"
-                        href="#"
+                        href="#submit-form" @click="set_child2comment_id(Comment.child2_comment.id,Comment.comment.user_name)"
                         >Comment</a
+                      >
+                    </div>
+                    <hr />
+                  </div>
+                </div>
+                <div class="media-block" v-if="Comment.child3_comment">
+                  <div class="media-body-child3">
+                      <a class="media-left" href="#"
+                        ><img
+                          class="img-circle img-sm"
+                          alt="Profile Picture"
+                          src="https://bootdey.com/img/Content/avatar/avatar4.png"
+                        />
+                      </a>
+                    <div class="mar-btm">
+                      <a
+                        href="#"
+                        class="btn-link text-semibold media-heading box-inline"
+                        >{{ Comment.child3_comment.user_name }}</a
+                      >
+                      <p class="text-muted text-sm">
+                        <i class="fa fa-globe fa-lg"></i> {{ Comment.child3_comment.title }}
+                      </p>
+                    </div>
+                    <p>
+                      {{ Comment.child3_comment.text }}
+                    </p>
+                    <div class="pad-ver">
+                      <a
+                        class="btn btn-sm btn-default btn-hover-primary"
+                        href="#" 
+                        ></a
                       >
                     </div>
                     <hr />
@@ -169,250 +183,12 @@
             </div>
           </div>
           <!-- finish -->
-          <!-- Newsfeed Content -->
-          <!--===================================================-->
-          <div class="media-block">
-            <a class="media-left" href="#"
-              ><img
-                class="img-circle img-sm"
-                alt="Profile Picture"
-                src="https://bootdey.com/img/Content/avatar/avatar1.png"
-            /></a>
-            <div class="media-body">
-              <div class="mar-btm">
-                <a
-                  href="#"
-                  class="btn-link text-semibold media-heading box-inline"
-                  >Lisa D.</a
-                >
-                <p class="text-muted text-sm">
-                  <i class="fa fa-mobile fa-lg"></i> - From Mobile - 11 min ago
-                </p>
-              </div>
-              <p>
-                consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi
-                enim ad minim veniam, quis nostrud exerci tation ullamcorper
-                suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-              </p>
-              <div class="pad-ver">
-                <div class="btn-group">
-                  <a class="btn btn-sm btn-default btn-hover-success" href="#"
-                    ><i class="fa fa-thumbs-up"></i
-                  ></a>
-                  <a class="btn btn-sm btn-default btn-hover-danger" href="#"
-                    ><i class="fa fa-thumbs-down"></i
-                  ></a>
-                </div>
-                <a class="btn btn-sm btn-default btn-hover-primary" href="#"
-                  >Comment</a
-                >
-              </div>
-              <hr />
-
-              <!-- Comments -->
-              <div>
-                <div class="media-block">
-                  <a class="media-left" href="#"
-                    ><img
-                      class="img-circle img-sm"
-                      alt="Profile Picture"
-                      src="https://bootdey.com/img/Content/avatar/avatar2.png"
-                  /></a>
-                  <div class="media-body">
-                    <div class="mar-btm">
-                      <a
-                        href="#"
-                        class="btn-link text-semibold media-heading box-inline"
-                        >Bobby Marz</a
-                      >
-                      <p class="text-muted text-sm">
-                        <i class="fa fa-mobile fa-lg"></i> - From Mobile - 7 min
-                        ago
-                      </p>
-                    </div>
-                    <p>
-                      Sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-                      magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-                      quis nostrud exerci tation ullamcorper suscipit lobortis
-                      nisl ut aliquip ex ea commodo consequat.
-                    </p>
-                    <div class="pad-ver">
-                      <div class="btn-group">
-                        <a
-                          class="
-                            btn btn-sm btn-default btn-hover-success
-                            active
-                          "
-                          href="#"
-                          ><i class="fa fa-thumbs-up"></i> You Like it</a
-                        >
-                        <a
-                          class="btn btn-sm btn-default btn-hover-danger"
-                          href="#"
-                          ><i class="fa fa-thumbs-down"></i
-                        ></a>
-                      </div>
-                      <a
-                        class="btn btn-sm btn-default btn-hover-primary"
-                        href="#"
-                        >Comment</a
-                      >
-                    </div>
-                    <hr />
-                  </div>
-                </div>
-
-                <div class="media-block">
-                  <a class="media-left" href="#"
-                    ><img
-                      class="img-circle img-sm"
-                      alt="Profile Picture"
-                      src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                    />
-                  </a>
-                  <div class="media-body">
-                    <div class="mar-btm">
-                      <a
-                        href="#"
-                        class="btn-link text-semibold media-heading box-inline"
-                        >Lucy Moon</a
-                      >
-                      <p class="text-muted text-sm">
-                        <i class="fa fa-globe fa-lg"></i> - From Web - 2 min ago
-                      </p>
-                    </div>
-                    <p>
-                      Duis autem vel eum iriure dolor in hendrerit in vulputate
-                      ?
-                    </p>
-                    <div class="pad-ver">
-                      <div class="btn-group">
-                        <a
-                          class="btn btn-sm btn-default btn-hover-success"
-                          href="#"
-                          ><i class="fa fa-thumbs-up"></i
-                        ></a>
-                        <a
-                          class="btn btn-sm btn-default btn-hover-danger"
-                          href="#"
-                          ><i class="fa fa-thumbs-down"></i
-                        ></a>
-                      </div>
-                      <a
-                        class="btn btn-sm btn-default btn-hover-primary"
-                        href="#"
-                        >Comment</a
-                      >
-                    </div>
-                    <hr />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--===================================================-->
-          <!-- End Newsfeed Content -->
-
-          <!-- Newsfeed Content -->
-          <!--===================================================-->
-          <div class="media-block pad-all">
-            <a class="media-left" href="#"
-              ><img
-                class="img-circle img-sm"
-                alt="Profile Picture"
-                src="https://bootdey.com/img/Content/avatar/avatar1.png"
-            /></a>
-            <div class="media-body">
-              <div class="mar-btm">
-                <a
-                  href="#"
-                  class="btn-link text-semibold media-heading box-inline"
-                  >John Doe</a
-                >
-                <p class="text-muted text-sm">
-                  <i class="fa fa-mobile fa-lg"></i> - From Mobile - 11 min ago
-                </p>
-              </div>
-              <p>Lorem ipsum dolor sit amet.</p>
-              <img
-                class="img-responsive thumbnail"
-                src="https://via.placeholder.com/400x300"
-                alt="Image"
-              />
-              <div class="pad-ver">
-                <span class="tag tag-sm"
-                  ><i class="fa fa-heart text-danger"></i> 250 Likes</span
-                >
-                <div class="btn-group">
-                  <a class="btn btn-sm btn-default btn-hover-success" href="#"
-                    ><i class="fa fa-thumbs-up"></i
-                  ></a>
-                  <a class="btn btn-sm btn-default btn-hover-danger" href="#"
-                    ><i class="fa fa-thumbs-down"></i
-                  ></a>
-                </div>
-                <a class="btn btn-sm btn-default btn-hover-primary" href="#"
-                  >Comment</a
-                >
-              </div>
-              <hr />
-
-              <!-- Comments -->
-              <div>
-                <div class="media-block pad-all">
-                  <a class="media-left" href="#"
-                    ><img
-                      class="img-circle img-sm"
-                      alt="Profile Picture"
-                      src="https://bootdey.com/img/Content/avatar/avatar2.png"
-                  /></a>
-                  <div class="media-body">
-                    <div class="mar-btm">
-                      <a
-                        href="#"
-                        class="btn-link text-semibold media-heading box-inline"
-                        >Maria Leanz</a
-                      >
-                      <p class="text-muted text-sm">
-                        <i class="fa fa-globe fa-lg"></i> - From Web - 2 min ago
-                      </p>
-                    </div>
-                    <p>
-                      Duis autem vel eum iriure dolor in hendrerit in vulputate
-                      ?
-                    </p>
-                    <div>
-                      <div class="btn-group">
-                        <a
-                          class="btn btn-sm btn-default btn-hover-success"
-                          href="#"
-                          ><i class="fa fa-thumbs-up"></i
-                        ></a>
-                        <a
-                          class="btn btn-sm btn-default btn-hover-danger"
-                          href="#"
-                          ><i class="fa fa-thumbs-down"></i
-                        ></a>
-                      </div>
-                      <a
-                        class="btn btn-sm btn-default btn-hover-primary"
-                        href="#"
-                        >Comment</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--===================================================-->
-          <!-- End Newsfeed Content -->
         </div>
       </div>
     </div>
   </div>
 </div>
+
 </template>
 
 <script>
@@ -425,8 +201,9 @@ export default {
             allCommentsPost : null,
             name: "blog-component",
             post: null,
-            commentText: 'test',
-            user_name: 'amir_reza',
+            commentText: null,
+            user_name: null,
+            user_repled: null,
             comment_idcomment_id : null,
             child1_comment_idchild1_comment_id : null,
             child2_comment_idchild2_comment_id : null,
@@ -457,7 +234,7 @@ export default {
                   if (response.data.success) {
                       this.post = response.data.data;
                       console.log('yyyyyy',this.post.id)
-                      this.storeComment();
+                      this.getAllCommentsPost()
                   }
               })
       },
@@ -475,9 +252,39 @@ export default {
                   console.log(response.data);
                   if (response.data.success) {
                       console.log(response.data.data)
+                      this.showAlert()
+                      this.clearForm()
                   }
               })
-      }
+      },
+      showAlert() {
+      this.$swal('That was successfull!');
+      },
+      clearForm(){
+        this.user_name = null;
+        this.commentText = null;
+        this.comment_id = null;
+        this.child1_comment_id = null;
+        this.child2_comment_id = null;
+        this.child3_comment_id = null;
+        this.user_repled = null;
+      },
+      set_comment_id(comment_id,user_repled){
+        this.user_repled = user_repled;
+          this.comment_id = comment_id;
+      },
+      set_child1comment_id(child1_comment_id,user_repled){
+        this.user_repled = user_repled;
+        this.child1_comment_id = child1_comment_id;
+      },
+      set_child2comment_id(child2_comment_id,user_repled){
+        this.user_repled = user_repled;
+        this.child2_comment_id = child2_comment_id;
+      },
+      set_child3comment_id(child3_comment_id,user_repled){
+        this.user_repled = user_repled;
+        this.child3_comment_id = child3_comment_id;
+      },
     }
 };
 </script>
@@ -529,7 +336,54 @@ body{
 .media-block .media-body {
     display: block;
     overflow: hidden;
-    width: auto
+    width: auto;
+    margin-left:5%
+}
+
+.media-block .media-body-comment {
+  box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    display: block;
+    overflow: hidden;
+    width: auto;
+    margin-left:5%;
+    margin-bottom: 2%;
+    border-radius: 5%;
+    padding-top: 3%;
+    padding-left: 2%;
+    
+}
+
+.media-block .media-body-child1{
+    display: block;
+    overflow: hidden;
+    width: auto;
+    margin-left:9%;
+    margin-bottom: 2%;
+    border-radius: 5%;
+    padding-top: 3%;
+    padding-left: 2%;
+}
+
+.media-block .media-body-child2{
+    display: block;
+    overflow: hidden;
+    width: auto;
+    margin-left:13%;
+    margin-bottom: 2%;
+    border-radius: 5%;
+    padding-top: 3%;
+    padding-left: 2%;
+}
+
+.media-block .media-body-child3{
+    display: block;
+    overflow: hidden;
+    width: auto;
+    margin-left:17%;
+    margin-bottom: 2%;
+    border-radius: 5%;
+    padding-top: 3%;
+    padding-left: 2%;
 }
 
 .middle .media-left,
@@ -585,5 +439,12 @@ body{
 
 .mar-top {
     margin-top: 15px;
+}
+.post-btm{
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  margin: 5%;
+  padding: 5%;
+  
+  
 }
 </style>
