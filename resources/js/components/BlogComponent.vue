@@ -107,7 +107,7 @@
                     <div class="pad-ver">
                       <a
                         class="btn btn-sm btn-default btn-hover-primary"
-                        href="#submit-form" @click="set_child1comment_id(Comment.child1_comment.id,Comment.child1_comment.user_name)"
+                        href="#submit-form" @click="set_child1comment_id(Comment.child1_comment.id,Comment.child1_comment.user_name,Comment.comment.id)"
                         >Comment</a
                       >
                     </div>
@@ -140,7 +140,7 @@
                     <div class="pad-ver">
                       <a
                         class="btn btn-sm btn-default btn-hover-primary"
-                        href="#submit-form" @click="set_child2comment_id(Comment.child2_comment.id,Comment.child2_comment.user_name)"
+                        href="#submit-form" @click="set_child2comment_id(Comment.child2_comment.id,Comment.child2_comment.user_name,Comment.comment.id,Comment.child1_comment.id)"
                         >Comment</a
                       >
                     </div>
@@ -271,20 +271,26 @@ export default {
       },
       set_comment_id(comment_id,user_repled){
         this.user_repled = user_repled;
-          this.comment_id = comment_id;
+        this.comment_id = comment_id;
+        this.child1_comment_id = null;
+        this.child2_comment_id = null;
+        this.child3_comment_id = null;
       },
-      set_child1comment_id(child1_comment_id,user_repled){
+      set_child1comment_id(child1_comment_id,user_repled,comment_id){
         this.user_repled = user_repled;
+        this.comment_id = comment_id;
         this.child1_comment_id = child1_comment_id;
+        this.child2_comment_id = null;
+        this.child3_comment_id = null;
       },
-      set_child2comment_id(child2_comment_id,user_repled){
+      set_child2comment_id(child2_comment_id,user_repled,comment_id,child1_comment_id){
         this.user_repled = user_repled;
+        this.comment_id = comment_id;
+        this.child1_comment_id = child1_comment_id;
         this.child2_comment_id = child2_comment_id;
+        this.child3_comment_id = null;
       },
-      set_child3comment_id(child3_comment_id,user_repled){
-        this.user_repled = user_repled;
-        this.child3_comment_id = child3_comment_id;
-      },
+      
     }
 };
 </script>

@@ -5655,18 +5655,23 @@ __webpack_require__.r(__webpack_exports__);
     set_comment_id: function set_comment_id(comment_id, user_repled) {
       this.user_repled = user_repled;
       this.comment_id = comment_id;
+      this.child1_comment_id = null;
+      this.child2_comment_id = null;
+      this.child3_comment_id = null;
     },
-    set_child1comment_id: function set_child1comment_id(child1_comment_id, user_repled) {
+    set_child1comment_id: function set_child1comment_id(child1_comment_id, user_repled, comment_id) {
       this.user_repled = user_repled;
+      this.comment_id = comment_id;
       this.child1_comment_id = child1_comment_id;
+      this.child2_comment_id = null;
+      this.child3_comment_id = null;
     },
-    set_child2comment_id: function set_child2comment_id(child2_comment_id, user_repled) {
+    set_child2comment_id: function set_child2comment_id(child2_comment_id, user_repled, comment_id, child1_comment_id) {
       this.user_repled = user_repled;
+      this.comment_id = comment_id;
+      this.child1_comment_id = child1_comment_id;
       this.child2_comment_id = child2_comment_id;
-    },
-    set_child3comment_id: function set_child3comment_id(child3_comment_id, user_repled) {
-      this.user_repled = user_repled;
-      this.child3_comment_id = child3_comment_id;
+      this.child3_comment_id = null;
     }
   }
 });
@@ -29029,7 +29034,8 @@ var render = function () {
                                       click: function ($event) {
                                         return _vm.set_child1comment_id(
                                           Comment.child1_comment.id,
-                                          Comment.comment.user_name
+                                          Comment.child1_comment.user_name,
+                                          Comment.comment.id
                                         )
                                       },
                                     },
@@ -29092,7 +29098,9 @@ var render = function () {
                                       click: function ($event) {
                                         return _vm.set_child2comment_id(
                                           Comment.child2_comment.id,
-                                          Comment.comment.user_name
+                                          Comment.child2_comment.user_name,
+                                          Comment.comment.id,
+                                          Comment.child1_comment.id
                                         )
                                       },
                                     },
